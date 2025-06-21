@@ -67,9 +67,8 @@ bool ListInit(SeqList &L,int size){
         cin >>x;
         L.data[j]=x;
         L.length++;
-
-        cin.ignore();
         cout << "输入'" << ExitCommand << "'以退出(区分大小写)，直接回车继续: ";
+		cin.ignore();
         getline(cin,input);
 
         if(input==ExitCommand){
