@@ -162,6 +162,7 @@ SeqList ListMerge(SeqList L,SeqList K){
     SeqList M;
     M.length=0;
     M.data=new ElemType[L.length+K.length];
+    M.MaxSize=L.length+K.length;
     while(l<L.length && k<K.length){
         if(L.data[l]<=K.data[k]){
 			M.data[m++]=L.data[l++];
@@ -175,7 +176,7 @@ SeqList ListMerge(SeqList L,SeqList K){
     while (k < K.length) {
         M.data[m++] = K.data[k++];
     }
-    M.length=m+1;
+    M.length=m;
     return M;
 }
 void DestroyList(SeqList &L){
