@@ -1,5 +1,6 @@
 #include "../include/LinkedList.h"
 #include <iostream>
+#include <string>
 using namespace std;
 bool ListInit(LinkList &L){
     L=new LNode;
@@ -18,10 +19,10 @@ int ListLength(LinkList L){
 ElemType GetElem(LinkList L,int p){
 	int len=ListLength(L);
     LNode *N=L;
-    if(p>len){
+    if(p>len || p<=0){
         throw "查找位置不合法！";
     }
-    for(int j=0;j<=p;j++){
+    for(int j=0;j<p;j++){
 		N=N->next;
     }
     cout << "位于第" << p << "位的元素是" << N->data << endl;
@@ -30,22 +31,22 @@ ElemType GetElem(LinkList L,int p){
 LNode *LocateElem(LinkList L,ElemType x){
     LNode *p=L->next;
     int l=1;
-    while(p->data!=x && p->next!=nullptr){
+    while(p->data!=x && p!=nullptr){
 		p=p->next;
         l++;
     }
-    if(p->next==nullptr && p->data!=x){
+    if(p==nullptr){
         throw "单链表中不存在该值！";
     }
     cout << "元素" << x << "位于第" <<l <<"位." <<endl;
     return p;
 }
 LNode *GetNode(LinkList L,int p){
-    if(p>ListLength(L)){
+    if(p>ListLength(L)||p<=0){
         throw "选择的位置不合法！";
     }
     LNode *x=L;
-    for(int j=0;j<p-1;j++){
+    for(int j=0;j<p;j++){
 		x=x->next;
     }
     return x;
@@ -54,7 +55,7 @@ bool ListInsert(LinkList &L){
     int l;
     cout << "请输入要插入的位置:" << endl;
     cin >> l;
-    if(l>ListLength(L)){
+    if(l>ListLength(L)||l<=0){
         throw "插入位置不合法！";
     }
     ElemType x;
@@ -71,7 +72,7 @@ bool ListInsertH(LinkList &L){
     int l;
     cout << "请输入要插入的位置:" << endl;
     cin >> l;
-    if(l>ListLength(L)){
+    if(l>ListLength(L)||l<1){
         throw "插入位置不合法！";
     }
 	ElemType x;
@@ -93,14 +94,15 @@ bool NodeDelete(LinkList &L){
         int l;
         cout << "请输入要删除的结点所处的位置：" << endl;
         cin >> l;
-        if(l>ListLength(L)){
+        if(l>ListLength(L)||l<1){
         	throw "删除位置不合法！";
     	}
 		LNode *a=GetNode(L,l);
         LNode *d=a->next;
         a->next=d->next;
         ElemType temp=d->data;
-        delete(d);
+        delete d;
+        d=nullptr;
         cout << "删除的结点的值为" << temp << "." << endl;
         return true;
     }else{
@@ -109,11 +111,11 @@ bool NodeDelete(LinkList &L){
         cin >> x;
 		LNode *p=L;
         int l=1;
-    	while(p->next->data!=x && p->next!=nullptr){
+    	while(p->next!=nullptr && p->next->data!=x){
 			p=p->next;
             l++;
     	}
-    	if(p->next==nullptr && p->data!=x){
+    	if(p->next==nullptr){
         	throw "单链表中不存在该值！";
     	}
         LNode *d=p->next;
@@ -122,4 +124,24 @@ bool NodeDelete(LinkList &L){
         return true; 
     }
     return false;
+}
+LinkList ListCreateH(LinkList &L){
+    LNode *s;
+    ElemType X;
+    int l=0;
+    string choose="y";
+    while(choose!="n"&&choose!="N"){
+        s=new LNode;
+        cout << "请输入一个值" << endl;
+        cin >>X;
+        s->data=X;
+        s->next=L->next;
+        L->next=s;
+        l++;
+        cout << "输入n以外的内容以继续输入内容(不区分大小写)." << endl;
+        cin.ignore();
+        getline(cin,choose);
+    }
+    cout << "创建完毕，共有" << l << "位数据！" << endl;
+    return L;
 }

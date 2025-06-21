@@ -13,4 +13,6 @@ LNode *GetNode(LinkList L,int p);//获取指定位置的结点
 bool ListInsert(LinkList &L);//在指定位置使用后插法插入一个元素
 bool ListInsertH(LinkList &L);//在指定位置前方插入一个元素
 bool NodeDelete(LinkList &L);//删除指定结点
+LinkList ListCreateH(LinkList &L);//头插法建立单链表
+LinkList ListCreateT(LinkList &L);//尾插法建立单链表
 #endif //LINKEDLIST_H
