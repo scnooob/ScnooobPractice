@@ -1,0 +1,22 @@
+name: Sync from Gitee
+
+on:
+  schedule:
+    - cron: '0 * * * *'    # 每小时同步一次
+  workflow_dispatch:       # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Gitee repository
+        run: |
+          git clone --bare https://gitee.com/${{ secrets.GITEE_USER }}/${{ secrets.GITEE_REPO }}.git gitee_repo
+
+      - name: Mirror push to GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd gitee_repo
+          git push --mirror https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
