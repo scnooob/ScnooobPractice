@@ -147,7 +147,7 @@ LinkList ListCreateH(LinkList &L){
     ElemType X;
     int l=0;
     string choose="y";
-    while(choose!="n"&&choose!="N"){
+    while(choose!="n" && choose!="N"){
         s=new LNode;
         cout << "请输入一个值" << endl;
         cin >>X;

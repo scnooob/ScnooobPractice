@@ -7,7 +7,7 @@ typedef struct LNode{
 }LNode,*LinkList;
 bool ListInit(LinkList &L);//初始化一个带头结点的单链表
 int ListLength(LinkList L);//求单链表的表长
-int GetElem(LinkList L,int p);//根据序号查找结点,p即所要使用的序号，r用来传出运行状况
+ElemType GetElem(LinkList L,int p);//根据序号查找结点,p即所要使用的序号
 LNode *LocateElem(LinkList L,ElemType x);//根据元素值查找对应结点
 LNode *GetNode(LinkList L,int p);//获取指定位置的结点
 bool ListInsert(LinkList &L);//在指定位置使用后插法插入一个元素

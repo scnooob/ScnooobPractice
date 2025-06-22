@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include "../include/Seqlist.h"
-#include "Seqlist.cpp"
 using namespace std;
 int main(){
     SeqList L;
