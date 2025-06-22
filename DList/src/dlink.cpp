@@ -13,7 +13,7 @@ Result GetElem(DList L,int p){
     Result result;
     for(int j=0;j<p-1;j++){
         if(s==nullptr){
-            throw "该位置不合法！";
+            throw runtime_error("该位置不合法");
         }
         s=s->next;
     }
@@ -29,38 +29,56 @@ DNode *LocateElem(DList L,ElemType x){
         s=s->next;
         l++;
     }
-    if(s->data!=x){
-        throw "该元素不存在于该表！";
+    if(s==nullptr || s->data!=x){
+        throw runtime_error("该元素不存在于该表！");
     }
 	cout << "第一个具有该值的结点位于第" << l << "位." << endl;
     return s;
 }
 bool DListInsert(DNode *P,ElemType x){
-    DNode *n;
+    DNode *n=new DNode;
     n->data=x;
     cout << "输入1以在该结点前方插入结点，输入其他在该节点后方插入." << endl;
     string choose="0";
     cin.ignore();
     getline(cin,choose);
     if(choose=="1"){
+        if(P->prior==nullptr){
+            throw runtime_error("该节点的前方无法插入结点！");
+        }
         n->prior=P->prior;
         n->next=P;
         n->prior->next=n;
         P->prior=n;
     }else{
-        n->next=P->next;
-        P->next=n;
-        n->prior=P;
-        n->next->prior=n;
+        if(P->next!=nullptr){
+        	n->next=P->next;
+        	P->next=n;
+        	n->prior=P;
+        	n->next->prior=n;
+        }else{
+            P->next=n;
+            n->prior=P;
+            n->next=nullptr;
+        }
     }
     cout << "插入完成！" << endl;
     return true;
 }
 bool NodeDel(DNode *P){
+    if(P==nullptr){
+        throw runtime_error("该结点不存在！");
+    }
     DNode *p=P->prior;
-    DNode *n=P->prior;
-    p->next=n;
-    n->prior=p;
+    DNode *n=P->next;
+    if(p!=nullptr && n!=nullptr){
+    	p->next=n;
+    	n->prior=p;
+    }else if(p==nullptr){
+		throw runtime_error("不能删除头结点！");
+    }else{
+        p->next=nullptr;
+    }
     delete P;
     P=nullptr;
     return true;
@@ -69,7 +87,7 @@ bool DListCH(DList &L){
     DNode *s;
     string choose="y";
     ElemType x;
-    while(choose =="n" && choose == "N"){
+    while(choose !="n" && choose != "N"){
         s=new DNode;
         cout << "请输入结点的值:" << endl;
         cin >> x;
@@ -116,6 +134,7 @@ void PrintList(DList L){
     while(s!=nullptr){
 		cout << s->data << " ";
         t++;
+        s=s->next;
         if(t%5==0){
             cout << endl;
         }
