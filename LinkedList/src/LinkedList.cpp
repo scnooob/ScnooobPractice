@@ -31,7 +31,7 @@ ElemType GetElem(LinkList L,int p){
 LNode *LocateElem(LinkList L,ElemType x){
     LNode *p=L->next;
     int l=1;
-    while(p->data!=x && p!=nullptr){
+    while(p!=nullptr && p->data!=x){
 		p=p->next;
         l++;
     }
@@ -55,13 +55,21 @@ bool ListInsert(LinkList &L){
     int l;
     cout << "请输入要插入的位置:" << endl;
     cin >> l;
-    if(l>ListLength(L)||l<=0){
+    if(l>ListLength(L)+1||l<=0){
         throw "插入位置不合法！";
     }
     ElemType x;
     cout << "请输入要插入的值:" << endl;
     cin >> x;
-    LNode *p=GetNode(L,l);
+    LNode *p;
+    if(l == 1){
+        p = L;
+    } else {
+        p = L;
+        for(int j=0; j<l-1; j++){
+            p = p->next;
+        }
+    }
     LNode *s=new LNode;
 	s->data=x;
     s->next=p->next;
@@ -97,9 +105,17 @@ bool NodeDelete(LinkList &L){
         if(l>ListLength(L)||l<1){
         	throw "删除位置不合法！";
     	}
-		LNode *a=GetNode(L,l);
-        LNode *d=a->next;
-        a->next=d->next;
+        LNode *prev;
+        if(l == 1){
+            prev = L;
+        } else {
+            prev = L;
+            for(int j=0; j<l-1; j++){
+                prev = prev->next;
+            }
+        }
+        LNode *d=prev->next;
+        prev->next=d->next;
         ElemType temp=d->data;
         delete d;
         d=nullptr;
@@ -120,6 +136,7 @@ bool NodeDelete(LinkList &L){
     	}
         LNode *d=p->next;
         p->next=d->next;
+        delete d;
         cout << "删除的元素位于第" << l << "位." <<endl;
         return true; 
     }
@@ -148,13 +165,13 @@ LinkList ListCreateH(LinkList &L){
 LinkList ListCreateT(LinkList &L){
     LNode *s,*n=L;
     string choose="y";
-    while(choose != "n" || choose != "N"){
+    while(choose != "n" && choose != "N"){
         ElemType x;
         cout << "请输入要插入的值：" << endl;
         cin >> x;
         s=new LNode;
 		s->data=x;
-        s->next=n->next;
+        s->next=nullptr;
 		n->next=s;
         n=n->next;
         cout << "请问是否要继续输入？输入n以结束(不区分大小写)." << endl;
@@ -164,6 +181,10 @@ LinkList ListCreateT(LinkList &L){
     return L;
 }
 void ListPrint(LinkList L){
+    if(L == nullptr || L->next == nullptr){
+        cout << "链表为空";
+        return;
+    }
     LNode *s=L->next;
     int l=0;
 	while(s!=nullptr){
