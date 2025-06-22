@@ -163,3 +163,15 @@ LinkList ListCreateT(LinkList &L){
     }
     return L;
 }
+void ListPrint(LinkList L){
+    LNode *s=L->next;
+    int l=0;
+	while(s!=nullptr){
+        cout << s->data << " ";
+        l++;
+        s=s->next;
+        if(l%10==0){
+            cout << endl;
+        }
+    }
+}
