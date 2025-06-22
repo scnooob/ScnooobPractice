@@ -145,3 +145,21 @@ LinkList ListCreateH(LinkList &L){
     cout << "创建完毕，共有" << l << "位数据！" << endl;
     return L;
 }
+LinkList ListCreateT(LinkList &L){
+    LNode *s,*n=L;
+    string choose="y";
+    while(choose != "n" || choose != "N"){
+        ElemType x;
+        cout << "请输入要插入的值：" << endl;
+        cin >> x;
+        s=new LNode;
+		s->data=x;
+        s->next=n->next;
+		n->next=s;
+        n=n->next;
+        cout << "请问是否要继续输入？输入n以结束(不区分大小写)." << endl;
+        cin.ignore();
+        getline(cin,choose);
+    }
+    return L;
+}
