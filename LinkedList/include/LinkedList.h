@@ -16,4 +16,9 @@ bool NodeDelete(LinkList &L);//删除指定结点
 LinkList ListCreateH(LinkList &L);//头插法建立单链表
 LinkList ListCreateT(LinkList &L);//尾插法建立单链表
 void ListPrint(LinkList L);//打印整个链表内容
+bool DelX(LinkList &L,ElemType x);//删除所有值为x的结点并释放空间
+bool DelMin(LinkList &L);//删除一个最小值结点
+bool ListRevert(LinkList &L);//就地逆置
+bool DelBet(LinkList &L,ElemType a,ElemType b);//删除值介于给定的两个参数之间的结点
+
 #endif //LINKEDLIST_H

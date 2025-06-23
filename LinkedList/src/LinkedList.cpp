@@ -196,3 +196,81 @@ void ListPrint(LinkList L){
         }
     }
 }
+bool DelX(LinkList &L,ElemType x){
+    LNode *s=L;
+    LNode *d=s->next;
+    int t=0;
+    while(d!=nullptr){
+        if(d->data==x){
+            s->next=d->next;
+            delete d;
+            d=s->next;
+            t++;
+            continue;
+        }
+        if(d->next==nullptr){
+            break;
+        }
+        s=s->next;
+        d=s->next;
+    }
+    cout << "删除完成,共删除了" << t << "个值为" << x <<"的元素" << endl;
+    return true;
+}
+bool DelMin(LinkList &L){
+    if(L==nullptr||L->next==nullptr){
+        throw runtime_error("链表为空！");
+    }
+    LNode *minPre,*pre,*cur;//minPre是指向已扫描过的结点中值最小的结点的前驱结点的指针，pre是指向扫描结点的前驱结点的指针，cur是用于扫描的指针
+    cur=L->next;
+    pre=L;
+    minPre=L;
+    while(cur!=nullptr){
+    	if(cur->data < minPre->next->data){
+            minPre=pre;
+        }
+        pre=cur;
+        cur=cur->next;
+    }
+    LNode *minNode=minPre->next;
+    minPre->next=minNode->next;
+    cout << "已删除值最小的结点，该结点值为" << minNode->data << "." << endl;
+    delete minNode;
+    return true;
+}
+bool ListRevert(LinkList &L){
+    if(L==nullptr || L->next==nullptr){
+        throw runtime_error("链表为空！");
+    }
+    LNode *f=L->next;
+    LNode *n;
+    while(f->next!=nullptr){
+		n=f->next;
+        f->next=n->next;
+        n->next=L->next;
+        L->next=n;
+    }
+    cout << "逆置完成！" << endl;
+    return true;
+}
+bool DelBet(LinkList &L,ElemType a,ElemType b){
+    if(L==nullptr || L->next==nullptr){
+        throw runtime_error("链表为空！");
+    }
+    LNode *cur,*pre;
+    pre=L;
+    cur=L->next;
+    LNode *del;
+    while(cur!=nullptr){
+        if(cur->data<b && cur->data > a){
+            del=cur;
+            cur=cur->next;
+            pre->next=cur;
+            delete del;
+            continue;
+        }
+        pre=cur;
+        cur=cur->next;
+    }
+    return true;
+}
