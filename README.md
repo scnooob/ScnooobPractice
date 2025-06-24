@@ -1,2 +1,2 @@
 # ScnooobPractice
-个人学习c++及git用
+个人学习c语言及git用
