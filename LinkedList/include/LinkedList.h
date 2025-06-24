@@ -20,5 +20,6 @@ bool DelX(LinkList &L,ElemType x);//删除所有值为x的结点并释放空间
 bool DelMin(LinkList &L);//删除一个最小值结点
 bool ListRevert(LinkList &L);//就地逆置
 bool DelBet(LinkList &L,ElemType a,ElemType b);//删除值介于给定的两个参数之间的结点
-
+bool SplitList(LinkList &C,LinkList &A,LinkList &B);//将C拆分为A和B两个单链表，a里是奇数项，b里是偶数项且顺序倒过来
+bool DelRep(LinkList &L);//删除链表中重复的元素
 #endif //LINKEDLIST_H

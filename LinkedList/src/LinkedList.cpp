@@ -274,3 +274,30 @@ bool DelBet(LinkList &L,ElemType a,ElemType b){
     }
     return true;
 }
+bool SplitList(LinkList &C,LinkList &A,LinkList &B){
+    if(C==nullptr||C->next==nullptr){
+        throw runtime_error("链表为空！");
+    }
+    LNode *p=C->next;
+    LNode *temp;
+    LNode *a=A;
+    int t=1;
+    while(p!=nullptr){
+		if(t%2==0){
+            temp=p;
+            p=p->next;
+			temp->next=B->next;
+            B->next=temp;
+        }else{
+            temp=p;
+            p=p->next;
+            temp->next=a->next;
+            a->next=temp;
+            a=a->next;
+        }
+        t++;
+    }
+    cout << "拆分完成" << endl;
+    return true;
+}
+bool DelRep(LinkList &L);
