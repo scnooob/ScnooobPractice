@@ -1,247 +1,100 @@
 #include "../include/LinkedList.h"
 #include <iostream>
-#include <string>
 using namespace std;
 
 int main() {
-    LinkList L = nullptr;
-    
-    cout << "=== 链表功能测试程序 ===" << endl << endl;
-    
-    // 1. 测试初始化
-    cout << "1. 测试初始化功能" << endl;
-    if (ListInit(L)) {
-        cout << "链表初始化成功！" << endl;
-    } else {
-        cout << "链表初始化失败！" << endl;
-    }
-    cout << "初始化后链表长度: " << ListLength(L) << endl;
-    cout << "初始化后链表内容: ";
+    // 1. 头插法建立链表
+    LinkList L = ListCreateH();
+    cout << "初始链表（头插法）:" << endl;
     ListPrint(L);
-    cout << endl << endl;
-    
-    // 2. 测试头插法创建链表
-    cout << "2. 测试头插法创建链表" << endl;
-    cout << "即将使用头插法创建链表..." << endl;
-    try {
-        ListCreateH(L);
-        cout << "头插法创建完成！" << endl;
-        cout << "创建后链表长度: " << ListLength(L) << endl;
-        cout << "创建后链表内容: ";
+
+    // 2. 求长度
+    cout << "链表长度: " << ListLength(L) << endl;
+
+    // 3. 插入元素
+    int pos, val;
+    cout << "测试插入: 请输入插入位置和值: ";
+    cin >> pos >> val;
+    if (ListInsert(L, pos, val)) {
+        cout << "插入后链表: ";
         ListPrint(L);
-        cout << endl;
-    } catch (const char* e) {
-        cout << "创建过程中出现异常: " << e << endl;
-    }
-    cout << endl;
-    
-    // 3. 测试按位置查找元素
-    cout << "3. 测试按位置查找元素功能" << endl;
-    if (ListLength(L) > 0) {
-        try {
-            cout << "查找第1位的元素:" << endl;
-            ElemType elem = GetElem(L, 1);
-            cout << "查找成功！返回值: " << elem << endl;
-        } catch (const char* e) {
-            cout << "异常: " << e << endl;
-        }
-        
-        if (ListLength(L) > 2) {
-            try {
-                cout << "查找第3位的元素:" << endl;
-                ElemType elem = GetElem(L, 3);
-                cout << "查找成功！返回值: " << elem << endl;
-            } catch (const char* e) {
-                cout << "异常: " << e << endl;
-            }
-        }
-        
-        try {
-            cout << "查找第99位的元素（超出范围）:" << endl;
-            ElemType elem = GetElem(L, 99);
-        } catch (const char* e) {
-            cout << "异常: " << e << endl;
-        }
     } else {
-        cout << "链表为空，跳过查找测试" << endl;
+        cout << "插入失败！" << endl;
     }
-    cout << endl;
-    
-    // 4. 测试按值查找元素
-    cout << "4. 测试按值查找元素功能" << endl;
-    if (ListLength(L) > 0) {
-        try {
-            // 先获取第一个元素的值进行查找测试
-            ElemType firstElem = GetElem(L, 1);
-            cout << "查找值为 " << firstElem << " 的元素:" << endl;
-            LNode* node = LocateElem(L, firstElem);
-            cout << "查找成功！" << endl;
-        } catch (const char* e) {
-            cout << "异常: " << e << endl;
-        }
-        
-        try {
-            cout << "查找值为 999 的元素（不存在）:" << endl;
-            LNode* node = LocateElem(L, 999);
-        } catch (const char* e) {
-            cout << "异常: " << e << endl;
-        }
-    } else {
-        cout << "链表为空，跳过查找测试" << endl;
-    }
-    cout << endl;
-    
-    // 5. 测试获取指定位置的结点
-    cout << "5. 测试获取指定位置的结点功能" << endl;
-    if (ListLength(L) > 0) {
-        try {
-            cout << "获取第1位的结点:" << endl;
-            LNode* node = GetNode(L, 1);
-            cout << "获取成功，结点数据为: " << node->data << endl;
-        } catch (const char* e) {
-            cout << "异常: " << e << endl;
-        }
-        
-        try {
-            cout << "获取第0位的结点（位置不合法）:" << endl;
-            LNode* node = GetNode(L, 0);
-        } catch (const char* e) {
-            cout << "异常: " << e << endl;
-        }
-    } else {
-        cout << "链表为空，跳过获取结点测试" << endl;
-    }
-    cout << endl;
-    
-    // 6. 测试后插法插入功能
-    cout << "6. 测试后插法插入功能" << endl;
-    cout << "插入前链表内容: ";
-    ListPrint(L);
-    cout << endl;
-    cout << "插入前链表长度: " << ListLength(L) << endl;
-    
-    try {
-        cout << "即将进行后插法插入..." << endl;
-        if (ListInsert(L)) {
-            cout << "后插法插入成功！" << endl;
-            cout << "插入后链表内容: ";
-            ListPrint(L);
-            cout << endl;
-            cout << "插入后链表长度: " << ListLength(L) << endl;
-        }
-    } catch (const char* e) {
-        cout << "插入过程中出现异常: " << e << endl;
-    }
-    cout << endl;
-    
-    // 7. 测试前插法插入功能
-    cout << "7. 测试前插法插入功能" << endl;
-    cout << "插入前链表内容: ";
-    ListPrint(L);
-    cout << endl;
-    cout << "插入前链表长度: " << ListLength(L) << endl;
-    
-    try {
-        cout << "即将进行前插法插入..." << endl;
-        if (ListInsertH(L)) {
-            cout << "前插法插入成功！" << endl;
-            cout << "插入后链表内容: ";
-            ListPrint(L);
-            cout << endl;
-            cout << "插入后链表长度: " << ListLength(L) << endl;
-        }
-    } catch (const char* e) {
-        cout << "插入过程中出现异常: " << e << endl;
-    }
-    cout << endl;
-    
-    // 8. 测试删除功能
-    cout << "8. 测试删除功能" << endl;
-    if (ListLength(L) > 0) {
-        cout << "删除前链表内容: ";
+
+    // 4. 删除元素
+    cout << "测试删除: 请输入删除位置: ";
+    cin >> pos;
+    ElemType delVal;
+    if (NodeDel(L, pos, delVal)) {
+        cout << "删除值为" << delVal << "，删除后链表: ";
         ListPrint(L);
-        cout << endl;
-        cout << "删除前链表长度: " << ListLength(L) << endl;
-        
-        try {
-            cout << "即将进行删除操作..." << endl;
-            if (NodeDelete(L)) {
-                cout << "删除成功！" << endl;
-                cout << "删除后链表内容: ";
-                ListPrint(L);
-                cout << endl;
-                cout << "删除后链表长度: " << ListLength(L) << endl;
-            }
-        } catch (const char* e) {
-            cout << "删除过程中出现异常: " << e << endl;
-        }
     } else {
-        cout << "链表为空，无法进行删除测试" << endl;
+        cout << "删除失败！" << endl;
     }
-    cout << endl;
-    
-    // 9. 测试尾插法创建新链表
-    cout << "9. 测试尾插法创建新链表" << endl;
-    LinkList L2 = nullptr;
-    if (ListInit(L2)) {
-        cout << "新链表L2初始化成功！" << endl;
-        try {
-            cout << "即将使用尾插法创建链表L2..." << endl;
-            ListCreateT(L2);
-            cout << "尾插法创建完成！" << endl;
-            cout << "L2链表长度: " << ListLength(L2) << endl;
-            cout << "L2链表内容: ";
-            ListPrint(L2);
-            cout << endl;
-        } catch (const char* e) {
-            cout << "创建过程中出现异常: " << e << endl;
-        }
+
+    // 5. 查找元素
+    cout << "测试按位置查找: 请输入位置: ";
+    cin >> pos;
+    if (GetElem(L, pos, val)) {
+        cout << "第" << pos << "个元素为: " << val << endl;
+    } else {
+        cout << "查找失败！" << endl;
     }
-    cout << endl;
-    
-    // 10. 最终状态展示
-    cout << "10. 最终状态展示" << endl;
-    cout << "链表L的最终状态:" << endl;
-    cout << "  长度: " << ListLength(L) << endl;
-    cout << "  内容: ";
+
+    // 6. 查找结点地址
+    cout << "测试按值查找: 请输入值: ";
+    cin >> val;
+    LNode *node = LocateElem(L, val);
+    if (node) {
+        cout << "找到值为" << val << "的结点，地址: " << node << endl;
+    } else {
+        cout << "未找到该值" << endl;
+    }
+
+    // 7. 删除所有某值
+    cout << "测试删除所有指定值: 请输入要删除的值: ";
+    cin >> val;
+    DelX(L, val);
+    cout << "删除后链表: ";
     ListPrint(L);
-    cout << endl;
-    
-    cout << "链表L2的最终状态:" << endl;
-    cout << "  长度: " << ListLength(L2) << endl;
-    cout << "  内容: ";
-    ListPrint(L2);
-    cout << endl;
-    cout << endl;
-    
-    // 11. 异常情况测试
-    cout << "11. 异常情况测试" << endl;
-    
-    // 测试空链表操作
-    LinkList L3 = nullptr;
-    ListInit(L3);
-    cout << "空链表L3长度: " << ListLength(L3) << endl;
-    cout << "空链表L3内容: ";
-    ListPrint(L3);
-    cout << endl;
-    
-    try {
-        cout << "在空链表中查找第1位元素:" << endl;
-        GetElem(L3, 1);
-    } catch (const char* e) {
-        cout << "异常: " << e << endl;
+
+    // 8. 逆置链表
+    ListRevert(L);
+    cout << "逆置后链表: ";
+    ListPrint(L);
+
+    // 9. 删除最小值结点
+    if (DelMin(L, delVal)) {
+        cout << "删除最小值" << delVal << "后链表: ";
+        ListPrint(L);
     }
-    
-    try {
-        cout << "在空链表中查找值为10的元素:" << endl;
-        LocateElem(L3, 10);
-    } catch (const char* e) {
-        cout << "异常: " << e << endl;
-    }
-    cout << endl;
-    
-    cout << "=== 链表功能测试程序结束 ===" << endl;
-    cout << "注意: 程序结束后请手动清理内存以避免内存泄漏" << endl;
-    
+
+    // 10. 删除区间
+    cout << "测试删除区间(a, b): 请输入a和b: ";
+    int a, b;
+    cin >> a >> b;
+    DelBet(L, a, b);
+    cout << "删除后链表: ";
+    ListPrint(L);
+
+    // 11. 删除重复元素
+    DelRep(L);
+    cout << "去重后链表: ";
+    ListPrint(L);
+
+    // 12. 尾插法建表测试
+    LinkList LT = ListCreateT();
+    cout << "尾插法建立链表: ";
+    ListPrint(LT);
+
+    // 13. 拆分偶数、奇数
+    LinkList odd, even;
+    SplitList(LT, odd, even);
+    cout << "奇数项链表: ";
+    ListPrint(odd);
+    cout << "偶数项链表（逆序）: ";
+    ListPrint(even);
+
     return 0;
 }

@@ -1,25 +1,35 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
+
+#include <iostream>
+
 typedef int ElemType;
-typedef struct LNode{
+struct LNode{
 	ElemType data;
-    struct LNode *next;
-}LNode,*LinkList;
-bool ListInit(LinkList &L);//初始化一个带头结点的单链表
-int ListLength(LinkList L);//求单链表的表长
-ElemType GetElem(LinkList L,int p);//根据序号查找结点,p即所要使用的序号
-LNode *LocateElem(LinkList L,ElemType x);//根据元素值查找对应结点
-LNode *GetNode(LinkList L,int p);//获取指定位置的结点
-bool ListInsert(LinkList &L);//在指定位置使用后插法插入一个元素
-bool ListInsertH(LinkList &L);//在指定位置前方插入一个元素
-bool NodeDelete(LinkList &L);//删除指定结点
-LinkList ListCreateH(LinkList &L);//头插法建立单链表
-LinkList ListCreateT(LinkList &L);//尾插法建立单链表
-void ListPrint(LinkList L);//打印整个链表内容
-bool DelX(LinkList &L,ElemType x);//删除所有值为x的结点并释放空间
-bool DelMin(LinkList &L);//删除一个最小值结点
+    LNode *next;
+};
+typedef LNode *LinkList;
+
+
+bool ListInit(LinkList &L);//初始化
+int ListLength(LinkList L);//求长度
+bool GetElem(LinkList L,int p,ElemType &e);//查找第p个元素
+LNode *LocateElem(LinkList L,ElemType x);//按值查找结点
+LNode *GetNode(LinkList L,int p);//获取第p个结点指针
+bool ListInsert(LinkList &L,int pos,ElemType x);//在pos处插入x
+bool ListInsertH(LinkList &L,int pos,ElemType x);//在pos前插入x
+bool NodeDel(LinkList &L,int pos,ElemType &e);//删除第pos个结点，返回结点的值
+bool NodeDelByVal(LinkList &L,ElemType x);//按值删除结点
+LinkList ListCreateH();//头插法建表
+LinkList ListCreateT();//尾插法建表
+void ListPrint(LinkList L);//打印链表
+bool DelX(LinkList &L,ElemType x);//删除所有值为x的结点
+bool DelMin(LinkList &L,ElemType &minVal);//删除最小值结点并返回该值
 bool ListRevert(LinkList &L);//就地逆置
-bool DelBet(LinkList &L,ElemType a,ElemType b);//删除值介于给定的两个参数之间的结点
-bool SplitList(LinkList &C,LinkList &A,LinkList &B);//将C拆分为A和B两个单链表，a里是奇数项，b里是偶数项且顺序倒过来
-bool DelRep(LinkList &L);//删除链表中重复的元素
+bool DelBet(LinkList &L,ElemType a,ElemType b);//删除值介于两个参数之间的结点
+bool SplitList(LinkList C,LinkList &A,LinkList &B);//将单链表拆分为两个单链表，A里是奇数项，B里是偶数项且逆置
+bool DelRep(LinkList &L);//删除重复元素
+LinkList MergeCommonElement(LinkList A,LinkList B,LinkList &C);//从两个元素递增有序的链表的公共元素中产生新的单链表
+bool IntersectList(LinkList &A,LinkList B);//求两个代表集合的有序单链表的交集，并存放到第一个链表中
+bool IsSubarray(LinkList A,LinkList B);//判断第二个序列是否是第一个序列的连续子序列
 #endif //LINKEDLIST_H

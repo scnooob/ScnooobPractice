@@ -1,303 +1,366 @@
 #include "../include/LinkedList.h"
 #include <iostream>
-#include <string>
+#include <unordered_set>
 using namespace std;
-bool ListInit(LinkList &L){
-    L=new LNode;
-    L->next=nullptr;
+
+bool ListInit(LinkList &L) {
+    L = new LNode;
+    L->next = nullptr;
     return true;
 }
-int ListLength(LinkList L){
-    int len=0;
-    LNode *p=L;
-    while(p->next!=nullptr){
-        p=p->next;
+int ListLength(LinkList L) {
+    int len = 0;
+    LNode *p = L->next;
+    while (p) {
+        p = p->next;
         len++;
     }
     return len;
 }
-ElemType GetElem(LinkList L,int p){
-	int len=ListLength(L);
-    LNode *N=L;
-    if(p>len || p<=0){
-        throw "查找位置不合法！";
+bool GetElem(LinkList L,int p,ElemType &e) {
+    if (p <= 0) return false;
+    LNode *cur = L->next;
+    int i = 1;
+    while (cur && i < p) {
+        cur = cur->next;
     }
-    for(int j=0;j<p;j++){
-		N=N->next;
-    }
-    cout << "位于第" << p << "位的元素是" << N->data << endl;
-    return N->data;
-}
-LNode *LocateElem(LinkList L,ElemType x){
-    LNode *p=L->next;
-    int l=1;
-    while(p!=nullptr && p->data!=x){
-		p=p->next;
-        l++;
-    }
-    if(p==nullptr){
-        throw "单链表中不存在该值！";
-    }
-    cout << "元素" << x << "位于第" <<l <<"位." <<endl;
-    return p;
-}
-LNode *GetNode(LinkList L,int p){
-    if(p>ListLength(L)||p<=0){
-        throw "选择的位置不合法！";
-    }
-    LNode *x=L;
-    for(int j=0;j<p;j++){
-		x=x->next;
-    }
-    return x;
-}
-bool ListInsert(LinkList &L){
-    int l;
-    cout << "请输入要插入的位置:" << endl;
-    cin >> l;
-    if(l>ListLength(L)+1||l<=0){
-        throw "插入位置不合法！";
-    }
-    ElemType x;
-    cout << "请输入要插入的值:" << endl;
-    cin >> x;
-    LNode *p;
-    if(l == 1){
-        p = L;
-    } else {
-        p = L;
-        for(int j=0; j<l-1; j++){
-            p = p->next;
-        }
-    }
-    LNode *s=new LNode;
-	s->data=x;
-    s->next=p->next;
-    p->next=s;
-    return true;
-}
-bool ListInsertH(LinkList &L){
-    int l;
-    cout << "请输入要插入的位置:" << endl;
-    cin >> l;
-    if(l>ListLength(L)||l<1){
-        throw "插入位置不合法！";
-    }
-	ElemType x;
-    cout << "请输入想插入的元素的值:" << endl;
-    cin >> x;
-    LNode *a=GetNode(L,l);
-	LNode *s=new LNode;
-    s->next=a->next;
-    s->data=a->data;
-    a->data=x;
-    a->next=s;
-    return true;
-}
-bool NodeDelete(LinkList &L){
-    char choose;
-    cout << "请选择是按位置删除结点还是按值删除结点，输入a以按位置删除，输入其他以按值删除" << endl;
-    cin >> choose;
-    if(choose=='a'){
-        int l;
-        cout << "请输入要删除的结点所处的位置：" << endl;
-        cin >> l;
-        if(l>ListLength(L)||l<1){
-        	throw "删除位置不合法！";
-    	}
-        LNode *prev;
-        if(l == 1){
-            prev = L;
-        } else {
-            prev = L;
-            for(int j=0; j<l-1; j++){
-                prev = prev->next;
-            }
-        }
-        LNode *d=prev->next;
-        prev->next=d->next;
-        ElemType temp=d->data;
-        delete d;
-        d=nullptr;
-        cout << "删除的结点的值为" << temp << "." << endl;
+    if (cur && i == p) {
+        e = cur->data;
         return true;
-    }else{
-        ElemType x;
-        cout << "请输入要删除的结点的值：" << endl;
-        cin >> x;
-		LNode *p=L;
-        int l=1;
-    	while(p->next!=nullptr && p->next->data!=x){
-			p=p->next;
-            l++;
-    	}
-    	if(p->next==nullptr){
-        	throw "单链表中不存在该值！";
-    	}
-        LNode *d=p->next;
-        p->next=d->next;
-        delete d;
-        cout << "删除的元素位于第" << l << "位." <<endl;
-        return true; 
     }
     return false;
 }
-LinkList ListCreateH(LinkList &L){
-    LNode *s;
-    ElemType X;
-    int l=0;
-    string choose="y";
-    while(choose!="n" && choose!="N"){
-        s=new LNode;
-        cout << "请输入一个值" << endl;
-        cin >>X;
-        s->data=X;
-        s->next=L->next;
-        L->next=s;
-        l++;
-        cout << "输入n以外的内容以继续输入内容(不区分大小写)." << endl;
-        cin.ignore();
-        getline(cin,choose);
+LNode *LocateElem(LinkList L,ElemType x) {
+    LNode *p = L->next;
+    while (p) {
+        if (p->data == x) return p;
+        p = p->next;
     }
-    cout << "创建完毕，共有" << l << "位数据！" << endl;
-    return L;
+    return nullptr;
 }
-LinkList ListCreateT(LinkList &L){
-    LNode *s,*n=L;
-    string choose="y";
-    while(choose != "n" && choose != "N"){
-        ElemType x;
-        cout << "请输入要插入的值：" << endl;
-        cin >> x;
-        s=new LNode;
-		s->data=x;
-        s->next=nullptr;
-		n->next=s;
-        n=n->next;
-        cout << "请问是否要继续输入？输入n以结束(不区分大小写)." << endl;
-        cin.ignore();
-        getline(cin,choose);
+LNode *GetNode(LinkList L,int p) {
+    if (p <= 0) return nullptr;
+    LNode *cur = L;
+    int i = 0;
+    while (cur && i < p) {
+        cur = cur->next;
+        i++;
     }
-    return L;
+    if (cur && i == p) return cur;
+    return nullptr;
 }
-void ListPrint(LinkList L){
-    if(L == nullptr || L->next == nullptr){
-        cout << "链表为空";
-        return;
+bool ListInsert(LinkList &L,int pos,ElemType x) {
+    if (pos <= 0) return false;
+    LNode *p = L;
+    int i = 0;
+    while (p && i < pos-1) {
+		p = p->next;
+        i++;
     }
-    LNode *s=L->next;
-    int l=0;
-	while(s!=nullptr){
-        cout << s->data << " ";
-        l++;
-        s=s->next;
-        if(l%10==0){
-            cout << endl;
-        }
-    }
-}
-bool DelX(LinkList &L,ElemType x){
-    LNode *s=L;
-    LNode *d=s->next;
-    int t=0;
-    while(d!=nullptr){
-        if(d->data==x){
-            s->next=d->next;
-            delete d;
-            d=s->next;
-            t++;
-            continue;
-        }
-        if(d->next==nullptr){
-            break;
-        }
-        s=s->next;
-        d=s->next;
-    }
-    cout << "删除完成,共删除了" << t << "个值为" << x <<"的元素" << endl;
+    if (!p) return false;
+    LNode *s = new LNode;
+    s->data = x;
+    s->next = p->next;
+    p->next = s;
     return true;
 }
-bool DelMin(LinkList &L){
-    if(L==nullptr||L->next==nullptr){
-        throw runtime_error("链表为空！");
+bool ListInsertH(LinkList &L,int pos,ElemType x) {
+    if(pos <= 0) return false;
+    LNode *prev = L;
+    int i = 0;
+    while (prev && i < pos-1) {
+        prev = prev->next;
+        i++;
     }
-    LNode *minPre,*pre,*cur;//minPre是指向已扫描过的结点中值最小的结点的前驱结点的指针，pre是指向扫描结点的前驱结点的指针，cur是用于扫描的指针
-    cur=L->next;
-    pre=L;
-    minPre=L;
-    while(cur!=nullptr){
-    	if(cur->data < minPre->next->data){
-            minPre=pre;
+    if (!prev || !prev->next) return false;
+    LNode *s = new LNode;
+    s->data = x;
+    s->next = prev->next;
+    prev->next = s;
+    return true;
+}
+bool NodeDel(LinkList &L,int pos,ElemType &e) {
+    if (pos <= 0) return false;
+    LNode *p = L;
+    int i = 0;
+    while (p && 1 < pos-1) {
+        p = p->next;
+        i++;
+    }
+    if (!p || !p->next) return false;
+    LNode *d = p->next;
+    e = d->data;
+    p->next = d->next;
+    delete d;
+    return true;
+}
+bool NodeDelByVal(LinkList &L,ElemType x) {
+    LNode *p = L;
+    while (p->next){
+        if (p->next->data == x) {
+            LNode *d = p->next;
+            p->next = d->next;
+            delete d;
+            return true;
         }
-        pre=cur;
-        cur=cur->next;
+        p = p->next;
     }
-    LNode *minNode=minPre->next;
-    minPre->next=minNode->next;
-    cout << "已删除值最小的结点，该结点值为" << minNode->data << "." << endl;
+    return false;
+}
+LinkList ListCreateH() {
+    cout << "开始使用头插法建立链表\n";
+    LinkList L;
+    ListInit(L);
+    int n;
+    cout << "请输入元素数量:\n";
+    cin >> n;
+    for (int j = 0;j < n;j++) {
+        ElemType x;
+        cout << "请输入元素:\n";
+        cin >> x;
+        LNode *s = new LNode;
+        s->data = x;
+        s->next = L->next;
+        L->next = s;
+    }
+    return L;
+}
+LinkList ListCreateT() {
+    cout << "开始使用尾插法建立链表\n";
+    LinkList L;
+    ListInit(L);
+    int n;
+    cout << "请输入元素数量:\n";
+    cin >> n;
+    LNode *tail = L;
+    for (int i = 0;i < n;i++) {
+        ElemType x;
+        cout << "请输入元素的值:\n";
+        cin >> x;
+        LNode *s = new LNode;
+        s->data = x;
+        s->next = nullptr;
+        tail->next = s;
+        tail = s;
+    }
+    return L;
+}
+void ListPrint(LinkList L) {
+    if (!L || !L->next) {
+        cout << "链表为空\n";
+        return;
+    }
+    LNode *p = L->next;
+    int cnt = 0;
+	while (p) {
+        cout << p->data << " ";
+        cnt++;
+        if (cnt%10 == 0) cout << endl;
+        p = p->next;
+    }
+    cout << endl;
+}
+bool DelX(LinkList &L,ElemType x) {
+    bool flag = false;
+    LNode *p = L;
+    while (p->next) {
+        if (p->next->data == x) {
+            LNode *del = p->next;
+            p->next = del->next;
+            delete del;
+            flag = true;
+        } else {
+            p = p->next;
+        }
+    }
+    return flag;
+}
+bool DelMin(LinkList &L,ElemType &minVal) {
+    if (!L || !L->next) {
+        cout << "链表为空!\n";
+        return false;
+    }
+    LNode *minPre = L, *cur = L->next;
+    minVal = cur->data;
+    while (cur->next) {
+    	if (cur->next->data < minVal) {
+            minVal = cur->next->data;
+            minPre = cur;
+        }
+        cur = cur->next;
+    }
+    LNode *minNode = minPre->next;
+    minPre->next = minNode->next;
+    minVal = minNode->data;
     delete minNode;
     return true;
 }
-bool ListRevert(LinkList &L){
-    if(L==nullptr || L->next==nullptr){
-        throw runtime_error("链表为空！");
+bool ListRevert(LinkList &L) {
+    if (!L || !L->next) return false;
+    LNode *prev = nullptr, *cur = L->next, *next = nullptr;
+    while (cur) {
+        next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
     }
-    LNode *f=L->next;
-    LNode *n;
-    while(f->next!=nullptr){
-		n=f->next;
-        f->next=n->next;
-        n->next=L->next;
-        L->next=n;
-    }
-    cout << "逆置完成！" << endl;
+    L->next = prev;
     return true;
 }
-bool DelBet(LinkList &L,ElemType a,ElemType b){
-    if(L==nullptr || L->next==nullptr){
-        throw runtime_error("链表为空！");
+bool DelBet(LinkList &L,ElemType a,ElemType b) {
+    if (!L || !L->next) {
+        cout << "链表为空!\n";
+        return false;
     }
-    LNode *cur,*pre;
-    pre=L;
-    cur=L->next;
-    LNode *del;
-    while(cur!=nullptr){
-        if(cur->data<b && cur->data > a){
-            del=cur;
-            cur=cur->next;
-            pre->next=cur;
-            delete del;
-            continue;
+    LNode *cur = L->next, *pre = L;
+    while (cur) {
+        if (cur->data < b && cur->data > a) {
+            pre->next = cur->next;
+            delete cur;
+            cur = pre->next;
+        } else {
+        	pre = cur;
+        	cur = cur->next;
         }
-        pre=cur;
-        cur=cur->next;
     }
     return true;
 }
-bool SplitList(LinkList &C,LinkList &A,LinkList &B){
-    if(C==nullptr||C->next==nullptr){
-        throw runtime_error("链表为空！");
+bool SplitList(LinkList C,LinkList &A,LinkList &B) {
+    if (!C || !C->next) {
+        cout << "链表为空!\n";
+        return false;
     }
-    LNode *p=C->next;
+    LNode *p = C->next;
     LNode *temp;
-    LNode *a=A;
-    int t=1;
-    while(p!=nullptr){
-		if(t%2==0){
-            temp=p;
-            p=p->next;
-			temp->next=B->next;
-            B->next=temp;
-        }else{
-            temp=p;
-            p=p->next;
-            temp->next=a->next;
-            a->next=temp;
-            a=a->next;
+    LNode *aTail = A;
+    int t = 1;
+    while (p) {
+		if(t%2 == 0){
+            temp = p;
+            p = p->next;
+			temp->next = B->next;
+            B->next = temp;
+        } else {
+            temp = p;
+            p = p->next;
+            temp->next = aTail->next;
+            aTail->next = temp;
+            aTail = aTail->next;
         }
         t++;
     }
-    cout << "拆分完成" << endl;
+    cout << "拆分完成\n";
     return true;
 }
-bool DelRep(LinkList &L);
+bool DelRep(LinkList &L) {
+    if (!L || !L->next) {
+        cout << "链表为空!\n";
+    }
+    unordered_set<ElemType> st;
+    LNode *p = L,*cur = L->next;
+    while (cur) {
+        if (st.count(cur->data)) {
+            p->next = cur->next;
+            delete cur;
+            cur = p->next;
+        } else {
+            st.insert(cur->data);
+            p = cur;
+            cur = cur->next;
+        }
+    }
+    return true;
+}
+LinkList MergeCommonElement(LinkList A,LinkList B) {
+    if (!A || !B) {
+        cout << "有链表不存在!\n";
+    }
+	LNode *a = A->next;
+    LNode *b = B->next;
+    LNode *i;
+    LinkList C;
+    ListInit(C);
+    LNode *t = C;
+    while (a && b) {
+		if (a->data > b->data) {
+            b = b->next;
+        } else if (a->data < b->data) {
+            a = a->next;
+        } else {
+            i = new LNode;
+            i->data = a->data;
+            t->next = i;
+            i->next = nullptr;
+			t = i;
+            a = a->next;
+            b = b->next;
+        }
+    }
+    cout << "链表已生成." << endl;
+    return C;
+}
+bool IntersectList(LinkList &A,LinkList B) {
+    if (!A || !B) {
+		cout << "链表不存在!\n";
+        return false;
+    }
+    LNode *pre = A;
+    LNode *cur = A->next;
+    LNode *b = B->next;
+    int len = 0;
+    while (cur && b) {
+        if (cur->data > b->data) {
+            b = b->next;
+        } else if (cur->data < b->data) {
+            pre->next = cur->next;
+            delete cur;
+            cur = pre->next;
+        } else {
+			pre = cur;
+            cur = pre->next;
+            b = b->next;
+            len++;
+        }
+    }
+    cout << "交集计算完毕，共有" << len << "位." << endl;
+    return true;
+}
+bool IsSubarray(LinkList A,LinkList B) {
+    if (!A || !B) {
+        cout << "有链表不存在!\n";
+    }
+    if (!A->next || !B->next) {
+        cout << "有链表为空!\n";
+    }
+    int al,bl;
+    al = ListLength(A);
+    bl = ListLength(B);
+    if (al < bl) {
+        return false;
+    }
+    LNode *a = a->next;
+    LNode *b = b->next;
+    int p = 0;
+    while (al-p >= bl) {
+        if (a->data==b->data) {
+			while (b->next != nullptr) {
+                b = b->next;
+                if (a->data==b->data) {
+					continue;
+                } else {
+                    break;
+                }
+            }
+            if (b->next == nullptr) {
+                return true;
+            }
+            b = B->next;
+            a = a->next;
+        } else if (a->next != nullptr) {
+			a = a->next;
+        } else {
+            return false;
+        }
+    }
+    return false;
+}
