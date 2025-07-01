@@ -1,13 +1,11 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-#include <iostream>
-
 typedef int ElemType;
-struct LNode{
+typedef struct LNode{
 	ElemType data;
     LNode *next;
-};
+}LNode;
 typedef LNode *LinkList;
 
 

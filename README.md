@@ -1,2 +1,2 @@
-# ScnooobPractice
-个人学习c语言及git用
+# 建立本仓库的原因
+使用codefa部署在平板上的codeserver无法安装github copilot插件，为了使用ai辅助修改代码，顺便熟悉一下git的基本操作，我建立了该仓库

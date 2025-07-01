@@ -18,4 +18,5 @@ bool DListCH(DList &L);//使用头插法建立双链表
 bool DListCT(DList &L);//使用尾插法建立双链表
 void PrintList(DList L);//打印整个表
 void DestroyList(DList &L);//删除链表
+
 #endif //DLINK_H

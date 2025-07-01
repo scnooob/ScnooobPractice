@@ -3,10 +3,10 @@
 
 typedef int ElemType;
 
-struct CDLN{
+typedef struct CDLN{
 	ElemType data;
     struct CDLN *prior,*next;
-};
+}CDLN;
 
 typedef CDLN *CDLL;
 

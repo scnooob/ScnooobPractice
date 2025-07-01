@@ -3,6 +3,7 @@
 using namespace std;
 
 bool ListInit(CDLL &L) {
+    L=new CDLN;
     L->next = L;
     L->prior = L;
     return true;
@@ -39,6 +40,7 @@ void PrintList(CDLL L){
         if (count%10 == 0) {
             cout << endl;
         }
+        p=p->next;
     }
     cout << "\n打印完成!\n";
 }
